@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>URL Modifier</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    input[type="text"], #output {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 1em;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>URL to Blindf Format Converter</h2>
+  <label for="urlInput">Enter URL:</label>
+  <input type="text" id="urlInput" placeholder="https://www.xyz.com/lakdjf/aldfj/?lasd=hi&ad=hy">
+  <button onclick="convertURL()">Convert</button>
+  
+  <h3>Modified URL:</h3>
+  <input type="text" id="output" readonly>
+
+  <script>
+    function convertURL() {
+      const input = document.getElementById("urlInput").value.trim();
+
+      // Replace special characters
+      const modified = input
+        .replace(/^https?:\/\//, '')  // remove protocol
+        .replace(/[\/=?&]/g, '_');    // replace / ? = & with _
+
+      const finalURL = `//blindf.com/b.php?c=${modified}`;
+      document.getElementById("output").value = finalURL;
+    }
+  </script>
+</body>
+</html>
