@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>URL Modifier & Shortener</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    input[type="text"], #output, #shortenedOutput {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 1em;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>URL to Blindf Format Converter</h2>
+  <label for="urlInput">Enter URL:</label>
+  <input type="text" id="urlInput" placeholder="https://www.xyz.com/lakdjf/aldfj/?lasd=hi&ad=hy">
+  <button onclick="convertURL()">Convert</button>
+  
+  <h3>Modified URL:</h3>
+  <input type="text" id="output" readonly>
+
+  <h3>Shortened URL:</h3>
+  <input type="text" id="shortenedOutput" readonly>
+
+  <script>
+    function convertURL() {
+      const input = document.getElementById("urlInput").value.trim();
+
+      // Replace special characters
+      const modified = input
+        .replace(/^https?:\/\//, '')  // remove protocol
+        .replace(/[\/=?&]/g, '_');    // replace / ? = & with _
+
+      const finalURL = `https://blindf.com/b.php?c=${modified}`;
+      document.getElementById("output").value = finalURL;
+
+      // Shorten using TinyURL
+      fetch(`https://api.tinyurl.com/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer YOUR_API_TOKEN_HERE"  // Replace with your TinyURL token
+        },
+        body: JSON.stringify({
+          url: finalURL,
+          domain: "tinyurl.com"
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.data && data.data.tiny_url) {
+          document.getElementById("shortenedOutput").value = data.data.tiny_url;
+        } else {
+          document.getElementById("shortenedOutput").value = "Error shortening URL.";
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById("shortenedOutput").value = "Network error.";
+      });
+    }
+  </script>
+</body>
+</html>
