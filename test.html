@@ -46,30 +46,16 @@
       const finalURL = `https://blindf.com/b.php?c=${modified}`;
       document.getElementById("output").value = finalURL;
 
-      // Shorten using TinyURL
-      fetch(`https://api.tinyurl.com/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer YOUR_API_TOKEN_HERE"  // Replace with your TinyURL token
-        },
-        body: JSON.stringify({
-          url: finalURL,
-          domain: "tinyurl.com"
+      // Use TinyURL free API (no key needed)
+      fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(finalURL)}`)
+        .then(response => response.text())
+        .then(shortUrl => {
+          document.getElementById("shortenedOutput").value = shortUrl;
         })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.data && data.data.tiny_url) {
-          document.getElementById("shortenedOutput").value = data.data.tiny_url;
-        } else {
-          document.getElementById("shortenedOutput").value = "Error shortening URL.";
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        document.getElementById("shortenedOutput").value = "Network error.";
-      });
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById("shortenedOutput").value = 'Error shortening URL.';
+        });
     }
   </script>
 </body>
