@@ -37,18 +37,27 @@
   <input type="text" id="shortenedOutput" readonly>
 
   <h3>Final Payload:</h3>
-  <input type="text" id="payloadOutput" readonly onclick="copyPayload()">
-  
-  <script>
-    function copyPayload() {
-      const payloadField = document.getElementById("payloadOutput");
-      payloadField.select();
-      payloadField.setSelectionRange(0, 99999); // for mobile devices
-      navigator.clipboard.writeText(payloadField.value).then(() => {
-        alert("Payload copied to clipboard!");
-      });
-    }
-  </script>
+<input type="text" id="payloadOutput" readonly onclick="copyPayload()">
+<small id="copyTip" style="color: green; display: none; margin-left: 5px;">Payload Copied</small>
+
+<script>
+  function copyPayload() {
+    const payloadField = document.getElementById("payloadOutput");
+    const copyTip = document.getElementById("copyTip");
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(payloadField.value).then(() => {
+      // Show tip
+      copyTip.style.display = "inline";
+
+      // Hide after 1.5s
+      setTimeout(() => {
+        copyTip.style.display = "none";
+      }, 1500);
+    });
+  }
+</script>
+
 
   <script>
     function convertURL() {
