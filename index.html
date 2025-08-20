@@ -28,7 +28,7 @@
   <label for="urlInput">Enter URL:</label>
   <input type="text" id="urlInput" placeholder="https://www.xyz.com/page?test=value">
 
-  <button onclick="convertURL()">Convert</button>
+  <button id="convertBtn" onclick="convertURL()">Convert</button>
 
   <h3>Modified URL:</h3>
   <input type="text" id="output" readonly>
@@ -68,6 +68,14 @@
           document.getElementById("payloadOutput").value = '';
         });
     }
+
+    // Trigger convertURL on pressing Enter inside the input
+    document.getElementById("urlInput").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault(); // prevent form submit if any
+        document.getElementById("convertBtn").click();
+      }
+    });
   </script>
 </body>
 </html>
