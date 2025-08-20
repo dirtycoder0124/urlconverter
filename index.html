@@ -37,7 +37,18 @@
   <input type="text" id="shortenedOutput" readonly>
 
   <h3>Final Payload:</h3>
-  <input type="text" id="payloadOutput" readonly>
+  <input type="text" id="payloadOutput" readonly onclick="copyPayload()">
+  
+  <script>
+    function copyPayload() {
+      const payloadField = document.getElementById("payloadOutput");
+      payloadField.select();
+      payloadField.setSelectionRange(0, 99999); // for mobile devices
+      navigator.clipboard.writeText(payloadField.value).then(() => {
+        alert("Payload copied to clipboard!");
+      });
+    }
+  </script>
 
   <script>
     function convertURL() {
